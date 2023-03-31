@@ -1,3 +1,6 @@
+import { nanoid } from 'nanoid'
+
+
 class TodoList {
     #appMarkup = `
     <div class="todo-list">
@@ -16,24 +19,41 @@ class TodoList {
 
     #refs = {};
 
+    #items = [];
+
     init(targetNode) {
       const targetElement = targetNode || document.body;
       targetElement.innerHTML = this.#appMarkup;
 
-      this.#refs.app = document.querySelector(`.todo-list`);
-      if (this.#refs.app) {
-        this.#refs.addItemBtn = this.#refs.app.querySelector(`.header__button`);
-        this.#refs.itemInput = this.#refs.app.querySelector(`.header__input`);
-
-        this.#refs.addItemBtn.addEventListener(`click`, this.#addTask.bind(this));
+      this.#defineRefs();
+      this.#initListeners();
   }
+
+
+#defineRefs() {
+  this.#refs.app = document.querySelector(`.todo-list`);
+  if (this.#refs.app) {
+    this.#refs.addItemBtn = this.#refs.app.querySelector(`.header__button`);
+    this.#refs.itemInput = this.#refs.app.querySelector(`.header__input`);
 }
+}
+
+#initListeners() {
+  this.#refs.addItemBtn.addEventListener(`click`, this.#addTask.bind(this));
+}
+
+
 #addTask() {
   const { value } = this.#refs.itemInput;
-  console.log(value);
+
+    if (value) {
+      const items = [...this.#items];
+      items.push({ id: nanoid(), value, done: false });
+  }
+}
 }
   
-}
+
 
 
 const todoList = new TodoList ();
