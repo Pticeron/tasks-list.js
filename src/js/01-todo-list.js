@@ -47,8 +47,8 @@ class TodoList {
   const { value } = this.#refs.itemInput;
 
     if (value) {
-      const items = [...this.#items];
-      items.push({ id: nanoid(), value, done: false });
+      this.#items.push({ id: nanoid(), value, done: false });
+      console.log(this.#items);
   }
 }
 }
