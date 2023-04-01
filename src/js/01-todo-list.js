@@ -1,7 +1,9 @@
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 
 
 class TodoList {
+  #STORAGE_KEY = `TODO-LIST-ITEMS`;
+
     #appMarkup = `
     <div class="todo-list">
     <header class="header">
@@ -44,6 +46,16 @@ class TodoList {
 
 #initListeners() {
   this.#refs.addItemBtn.addEventListener(`click`, this.#addTask.bind(this));
+  this.#refs.listContainer.addEventListener(`click`, this.#taskContainerOnClick.bind(this));
+}
+
+// Оновлення стейту
+
+#updateItems(items) {
+  this.#items = items;
+  this.#render();
+
+  localStore.save(this.#STORAGE_KEY, items);
 }
 
 
@@ -58,6 +70,41 @@ class TodoList {
   }
 
   this.#refs.itemInput.value = null;
+}
+
+#taskContainerOnClick(e) {
+  const taskRef = e.target.closest('.list__item[data-id]');
+
+  if (taskRef) {
+    if (e.target.dataset.action === 'remove') {
+      this.#removeTask(taskRef.dataset.id);
+    }
+
+      if(e.target.dataset.action === `toggle`) {
+        this.#toggleTask(taskRef.dataset.id);
+      }
+    }
+}
+#removeTask(id) {
+  const items = this.#items.filter((item) => item.id !== id);
+    
+  this.#updateItems(items);
+}
+
+
+#toggleTask(id) {
+  const items = this.#items.map((item) => {
+    if (id === item.id) {
+      return {
+        ...item,
+        done: !item.done,
+      };
+    }
+
+    return item;
+  });
+  
+  this.#updateItems(items);
 }
 
 #render() {
@@ -78,6 +125,9 @@ class TodoList {
 
 const todoTasks = this.#items.filter(({ done }) => !done);
 const doneTasks = this.#items.filter(({ done }) => done);
+
+this.#refs.currentList.innerHTML = todoTasks.map(getItem).join(``);
+this.#refs.doneList.innerHTML = doneTasks.map(getItem).join(``);
 }
 }
   
