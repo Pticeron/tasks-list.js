@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-
+import localStorage from "../services/storage";
 
 class TodoList {
   #STORAGE_KEY = `TODO-LIST-ITEMS`;
@@ -55,7 +55,8 @@ class TodoList {
   this.#items = items;
   this.#render();
 
-  localStore.save(this.#STORAGE_KEY, items);
+  localStorage.save(this.#STORAGE_KEY, items);
+  
 }
 
 
