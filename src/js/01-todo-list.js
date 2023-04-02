@@ -3,6 +3,7 @@ import localStorage from "../services/storage";
 
 class TodoList {
   #STORAGE_KEY = `TODO-LIST-ITEMS`;
+  #ENTER_KEY_CODE = 'Enter';
 
     #appMarkup = `
     <div class="todo-list">
@@ -21,7 +22,7 @@ class TodoList {
 
     #refs = {};
 
-    #items = [];
+    #items = localStorage.load(this.#STORAGE_KEY) || [];
 
     init(targetNode) {
       const targetElement = targetNode || document.body;
@@ -29,6 +30,7 @@ class TodoList {
 
       this.#defineRefs();
       this.#initListeners();
+      this.#render();
   }
 
 
@@ -47,6 +49,7 @@ class TodoList {
 #initListeners() {
   this.#refs.addItemBtn.addEventListener(`click`, this.#addTask.bind(this));
   this.#refs.listContainer.addEventListener(`click`, this.#taskContainerOnClick.bind(this));
+  this.#refs.itemInput.addEventListener('keypress', this.#addTaskByEnterKey.bind(this));
 }
 
 // Оновлення стейту
@@ -73,6 +76,13 @@ class TodoList {
   this.#refs.itemInput.value = null;
 }
 
+#addTaskByEnterKey(e) {
+  if (e.code === this.#ENTER_KEY_CODE) {
+    this.#addTask();
+  }
+}
+
+
 #taskContainerOnClick(e) {
   const taskRef = e.target.closest('.list__item[data-id]');
 
@@ -86,6 +96,7 @@ class TodoList {
       }
     }
 }
+
 #removeTask(id) {
   const items = this.#items.filter((item) => item.id !== id);
     
