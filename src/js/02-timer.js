@@ -9,6 +9,8 @@ class Countdown {
     const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.round((delta % (1000 * 60)) / 1000);
     
+    console.log({ days, hours, minutes, seconds });
+    
     }, 1000)
     }
 
