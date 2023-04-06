@@ -1,7 +1,8 @@
 class Countdown {
+    #intervalId = null;
+
     start(year) {
-    
-    setInterval(() => {
+    this.#intervalId =  setInterval(() => {
     const delta = new Date(year, 0) - Date.now();
 
     const days = Math.floor(delta / (1000 * 60 * 60 * 24));
@@ -9,13 +10,22 @@ class Countdown {
     const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.round((delta % (1000 * 60)) / 1000);
     
-    console.log({ days, hours, minutes, seconds });
+    console.log({ 
+        days: Countdown.formatValue(days), 
+        hours: Countdown.formatValue(hours), 
+        minutes: Countdown.formatValue(minutes), 
+        seconds: Countdown.formatValue(seconds), 
+    });
     
     }, 1000)
     }
 
     stop() {
-        console.log(`stop`);
+    clearInterval(this.#intervalId);
+    }
+
+    static formatValue(value) {
+        return value.toString().padStart(2, "0");
     }
 }
 
