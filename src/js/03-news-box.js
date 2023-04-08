@@ -30,3 +30,15 @@ const markup = `
     // add to DOM
 
 document.body.innerHTML = markup;
+
+// add eventListeners
+
+const ref = {
+    search: document.querySelector(`.news-app.search`),
+    articles: document.querySelector(`.news-app.articles`),
+};
+
+ref.search.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    console.log(e.currentTarget.elements.search.value);
+});
