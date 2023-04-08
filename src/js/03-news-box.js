@@ -34,11 +34,16 @@ document.body.innerHTML = markup;
 // add eventListeners
 
 const ref = {
-    search: document.querySelector(`.news-app.search`),
-    articles: document.querySelector(`.news-app.articles`),
+    search: document.querySelector(`.news-app .search`),
+    articles: document.querySelector(`.news-app .articles`),
 };
 
 ref.search.addEventListener(`submit`, (e) => {
     e.preventDefault();
     console.log(e.currentTarget.elements.search.value);
+
+    fetch(
+        'https://newsapi.org/v2?364fa8ee9d7346e7bae6dc97f478dce1'
+    ).then((data) => console.log(data));
 });
+
